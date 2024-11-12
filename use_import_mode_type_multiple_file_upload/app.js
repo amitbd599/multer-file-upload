@@ -7,8 +7,20 @@ app.use(cors());
 
 app.use(express.json({ limit: "500mb" }));
 
-app.post("/upload", upload.array("file", 500), (req, res) => {
-  res.send("Success");
+app.post("/upload", upload.array("file", 20), (req, res) => {
+  try {
+    if (!req.files) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    res.status(200).json({
+      message: "File uploaded successfully",
+      file: req.files,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Server Error");
+  }
 });
 
 app.use("/uploads", express.static("uploads"));
