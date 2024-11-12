@@ -2,8 +2,9 @@ const express = require("express");
 const multer = require("multer");
 
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 app.use(cors());
+
 // Set up Multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -19,13 +20,12 @@ const storage = multer.diskStorage({
 // Create Multer instance with the configured storage
 const upload = multer({ storage: storage });
 
-// Your routes and other middleware go here
-
 // Example file upload route
 app.post("/upload", upload.single("file"), (req, res) => {
-  // Handle the uploaded file
   res.json({ message: "File uploaded successfully" });
 });
+
+app.use("/uploads", express.static("uploads"));
 
 // Start the server
 const PORT = process.env.PORT || 5000;
